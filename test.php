@@ -9,10 +9,11 @@ use EclipseGc\DrupalOrg\Api\DrupalClient;
 $client = DrupalClient::create();
 
 
-$user = $client->getUser(740628);
-echo $user->getFirstName() . " " . $user->getlastName() . "'s mentors are:";
+$user = $client->getUser(348120);
+echo "The mentors of " . $user->getName() . "(" . $user->getFirstName() . " " . $user->getlastName() .  ") are:";
 foreach ($user->getMentors() as $mentor){
- echo "<br \>" . $mentor->getFirstName() . " " . $mentor->getlastName();
+ echo "<br \>" . $mentor->getName() . "(" . $mentor->getFirstName() . " " . $mentor->getlastName() .  ")";
+
  }
 /*foreach ($user->getAttendance() as $attendance){
 	echo $event;
