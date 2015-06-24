@@ -14,6 +14,7 @@ error_reporting(-1);
 const LAST_UID = 3248108;
 const DROZAS_UID = 740628;
 const JCARBALLO_UID = 1283668;
+const _403_UID = 1283721;
 
 $db_hostname = "localhost";
 $db_username = "dorg_mentors";
@@ -35,30 +36,33 @@ try
 	// Instatiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = JCARBALLO_UID; $i <= JCARBALLO_UID + 100; $i++) {
+	for ($i = DROZAS_UID; $i <= DROZAS_UID + 1000; $i++) {
 		//Get user. A custom exception should be catched here
-		$user = $client->getUser($i);
-		
-		if ($user->getUid() != NULL){
-			echo "Profile with UID = " . $i . " is being processed.<br />";
-			$mentored_uid = $user->getUid();
-			$mentored_username = $user->getName();
+		try {
+			$user = $client->getUser($i);
 			
-			//Add a new tuple for each mentored_by
-			foreach ($user->getMentors() as $mentored_by){
-				$mentored_by_uid = $mentored_by->getUid();
-				$mentored_by_username = $mentored_by->getName();
-				$sql = "INSERT INTO mentored_by (mentored_uid, mentored_by_uid, mentored_username, mentored_by_username)
-				VALUES ($mentored_uid, $mentored_by_uid, '$mentored_username', '$mentored_by_username')";
-				$result = $conn->query($sql);
+			if ($user->getUid() != NULL){
+				echo "Profile with UID = " . $i . " is being processed.<br />";
+				$mentored_uid = $user->getUid();
+				$mentored_username = $user->getName();
+					
+				//Add a new tuple for each mentored_by
+				foreach ($user->getMentors() as $mentored_by){
+					$mentored_by_uid = $mentored_by->getUid();
+					$mentored_by_username = $mentored_by->getName();
+					$sql = "INSERT INTO mentored_by (mentored_uid, mentored_by_uid, mentored_username, mentored_by_username)
+					VALUES ($mentored_uid, $mentored_by_uid, '$mentored_username', '$mentored_by_username')";
+					$result = $conn->query($sql);
+				}
+			}else{
+				echo "Profile with UID = " . $i . " has been skipped: 404 response from Drupal.org's API.<br />";
 			}			
-		}else{
-			echo "Profile with UID = " . $i . " has been skipped (NULL response from D.Org-API).<br />";
+		}catch (GuzzleHttp\Exception\ClientException $e){
+			echo "Profile with UID = " . $i . " has been skipped due to an exception from Drupal.org's API: " . $e->getMessage() . ".<br />";
 		}
 	}
 	$conn->close();
-} catch (Exception $e)
-{
+} catch (Exception $e) {
 	echo 'Caught exception: ', $e->getMessage(), "\n";
 }
 
