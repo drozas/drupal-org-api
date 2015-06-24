@@ -60,7 +60,9 @@ class User implements ResourceInterface {
   }
 
   public function __construct(FactoryInterface $factory, $field_industries_worked_in, $field_organizations, $field_bio, $field_irc_nick, $field_websites, $field_country, $field_gender, $field_languages, $field_terms_of_service, $field_areas_of_expertise, $field_contributed, $field_events_attended, $field_mentors, $field_drupal_contributions, $field_first_name, $field_last_name, $uid, $name, $url, $edit_url, $created) {
-    $this->factory = $factory;
+    //Maybe throw an exception here: if $this username, raise not username, and then catch this in the main code.
+  	
+  	$this->factory = $factory;
     $this->industries = $field_industries_worked_in;
     $this->organizations = $field_organizations;
     $this->bio = $field_bio;

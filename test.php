@@ -34,26 +34,26 @@ try
 	
 	$client = DrupalClient::create();
 
-	for ($i = DROZAS_UID; $i <= DROZAS_UID + 10; $i++) {
+	for ($i = DROZAS_UID; $i <= DROZAS_UID + 3; $i++) {
 		//Get user 
 		$user = $client->getUser($i);
 		
-		//Keep mentored in memory. More efficient?
-		$mentored_uid = $user->getUid();
-		$mentored_username = $user->getName();
-		
-		//Add a new tuple for each mentored_by
-		foreach ($user->getMentors() as $mentored_by){
-			$mentored_by_uid = $mentored_by->getUid();
-			$mentored_by_username = $mentored_by->getName();
-			$sql = "INSERT INTO mentored_by (mentored_uid, mentored_by_uid, mentored_username, mentored_by_username)
-			VALUES ($mentored_uid, $mentored_by_uid, '$mentored_username', '$mentored_by_username')";
-			$result = $conn->query($sql);
+		if ($user->getUid()!=null){
+			//Keep mentored in memory. More efficient?
+			echo $i . 'processed';
+			$mentored_uid = $user->getUid();
+			$mentored_username = $user->getName();
+			
+			//Add a new tuple for each mentored_by
+			foreach ($user->getMentors() as $mentored_by){
+				$mentored_by_uid = $mentored_by->getUid();
+				$mentored_by_username = $mentored_by->getName();
+				$sql = "INSERT INTO mentored_by (mentored_uid, mentored_by_uid, mentored_username, mentored_by_username)
+				VALUES ($mentored_uid, $mentored_by_uid, '$mentored_username', '$mentored_by_username')";
+				$result = $conn->query($sql);
+			}			
 		}
 	}
-
-
-
 	$conn->close();
 } catch (Exception $e)
 {
