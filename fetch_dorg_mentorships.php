@@ -13,6 +13,7 @@ error_reporting(-1);
 
 const LAST_UID = 3248108;
 const DROZAS_UID = 740628;
+const JCARBALLO_UID = 1283668;
 
 $db_hostname = "localhost";
 $db_username = "dorg_mentors";
@@ -25,22 +26,21 @@ use EclipseGc\DrupalOrg\Api\DrupalClient;
 
 try
 {
-	// Create connection
+	// Create and check connection
 	$conn = new mysqli($db_hostname, $db_username, $db_password, $db_name);
-	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
 	
+	// Instatiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = DROZAS_UID; $i <= DROZAS_UID + 3; $i++) {
-		//Get user 
+	for ($i = JCARBALLO_UID; $i <= JCARBALLO_UID + 100; $i++) {
+		//Get user. A custom exception should be catched here
 		$user = $client->getUser($i);
 		
-		if ($user->getUid()!=null){
-			//Keep mentored in memory. More efficient?
-			echo $i . 'processed';
+		if ($user->getUid() != NULL){
+			echo "Profile with UID = " . $i . " is being processed.<br />";
 			$mentored_uid = $user->getUid();
 			$mentored_username = $user->getName();
 			
@@ -52,6 +52,8 @@ try
 				VALUES ($mentored_uid, $mentored_by_uid, '$mentored_username', '$mentored_by_username')";
 				$result = $conn->query($sql);
 			}			
+		}else{
+			echo "Profile with UID = " . $i . " has been skipped (NULL response from D.Org-API).<br />";
 		}
 	}
 	$conn->close();
