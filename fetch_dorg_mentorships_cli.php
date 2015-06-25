@@ -28,6 +28,7 @@ const _403_UID = 1283721;
 
 // CONST FOR GATEWAY SERVER ERRORS
 const RUN_1 = 4735;
+const RUN_2 = 5155;
 
 // Dummy credentials, only to use for local purposes
 $db_hostname = "localhost";
@@ -47,12 +48,12 @@ try
 	}
 	
 	// Prepare log file
-	$log = fopen("log_" . time(), "w") or die("Unable to open file!");
+	$log = fopen("./logs/log_" . time(), "w") or die("Unable to open file!");
 	
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_1; $i <= LAST_UID; $i++) {
+	for ($i = RUN_2; $i <= LAST_UID; $i++) {
 		// Fectch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
