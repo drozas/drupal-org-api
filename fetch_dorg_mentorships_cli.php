@@ -20,6 +20,7 @@ ini_set('display_startup_errors',1);
 error_reporting(-1);
 
 // UID of testing user, created on 23/06/2015 - https://www.drupal.org/u/djohn4406
+const DRIES_UID = 1;
 const LAST_UID = 3248108;
 const DROZAS_UID = 740628;
 const JCARBALLO_UID = 1283668;
@@ -46,7 +47,7 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = 1; $i <= 500; $i++) {
+	for ($i = DRIES_UID; $i <= LAST_UID; $i++) {
 		// Fectch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
