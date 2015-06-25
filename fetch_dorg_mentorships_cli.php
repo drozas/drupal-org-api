@@ -26,6 +26,9 @@ const DROZAS_UID = 740628;
 const JCARBALLO_UID = 1283668;
 const _403_UID = 1283721;
 
+// CONST FOR GATEWAY SERVER ERRORS
+const RUN_1 = 4735;
+
 // Dummy credentials, only to use for local purposes
 $db_hostname = "localhost";
 $db_username = "dorg_mentors";
@@ -35,7 +38,6 @@ $db_name = "dorg_mentors";
 require 'vendor/autoload.php';
 use EclipseGc\DrupalOrg\Api\DrupalClient;
 
-
 try
 {
 	// Create and check connection
@@ -44,10 +46,13 @@ try
 		die("Connection failed: " . $conn->connect_error);
 	}
 	
+	// Prepare log file
+	$log = fopen("log_" . time(), "w") or die("Unable to open file!");
+	
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = DRIES_UID; $i <= LAST_UID; $i++) {
+	for ($i = RUN_1; $i <= LAST_UID; $i++) {
 		// Fectch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
@@ -57,7 +62,9 @@ try
 				
 				$mentored_uid = $user->getUid();
 				$mentored_username = $user->getName();
-				echo "- Profile from $mentored_username with UID #$i is being processed.\n";
+				$msg= "- Profile from $mentored_username with UID #$i is being processed.\n";
+				fwrite($log, $msg);
+				echo $msg;
 					
 				// Add a new record for each mentored_by relationship of this profile
 				foreach ($user->getMentors() as $mentored_by){
@@ -66,18 +73,28 @@ try
 					$sql = "INSERT INTO mentored_by (mentored_uid, mentored_by_uid, mentored_username, mentored_by_username)
 					VALUES ($mentored_uid, $mentored_by_uid, '$mentored_username', '$mentored_by_username')";
 					$result = $conn->query($sql);
-					echo "-- A mentorship_by relationship has been stored: $mentored_username (UID #$mentored_uid) was mentored by $mentored_by_username (UID #$mentored_by_uid).\n";
-				}
+					$msg = "-- A mentorship_by relationship has been stored: $mentored_username (UID #$mentored_uid) was mentored by $mentored_by_username (UID #$mentored_by_uid).\n";
+					fwrite($log, $msg);
+					echo $msg;
+			}
 			}else{
-				echo "- Profile with UID #$i has been skipped: 404 response from Drupal.org's API.\n";
+				$msg =  "- Profile with UID #$i has been skipped: 404 response from Drupal.org's API.\n";
+				fwrite($log, $msg);
+				echo $msg;
 			}			
 		}catch (GuzzleHttp\Exception\ClientException $e){
-			echo "- Profile with UID UID #$i has been skipped due to an exception from Drupal.org's API: " . $e->getMessage() . ".\n";
+			$msg = "- Profile with UID UID #$i has been skipped due to an exception from Drupal.org's API: $e->getMessage() \n";
+			fwrite($log, $msg);
+			echo $msg;
 		}
 	}
 	$conn->close();
+	fclose($log);
 } catch (Exception $e) {
-	echo '[!] Caught generic exception: ', $e->getMessage(), "\n";
+	$msg =  "[!] Caught generic exception:  $e->getMessage() \n";
+	fwrite($log, $msg);
+	fclose($log);
+	echo $msg;
 }
 
 ?>
