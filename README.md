@@ -1,4 +1,4 @@
-Understading "community-oriented" contributions: a SNA of mentorships relationships within the Drupal community
+Understading "community-oriented" contributions: a SNA of mentorship relationships within the Drupal community
 ==============
 
 Drupal.org provides a public API for retrieving common data which includes all node types, users, comments and more. You can find documentation on that here: https://www.drupal.org/api
