@@ -29,6 +29,7 @@ const _403_UID = 1283721;
 // CONST FOR GATEWAY SERVER ERRORS
 const RUN_1 = 4735;
 const RUN_2 = 5155;
+const RUN_3 = 11010;
 
 // Dummy credentials, only to use for local purposes
 $db_hostname = "localhost";
@@ -53,7 +54,7 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_2; $i <= LAST_UID; $i++) {
+	for ($i = RUN_3 + 1; $i <= LAST_UID; $i++) {
 		// Fectch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
