@@ -89,7 +89,7 @@ try
 			}			
 		}catch (GuzzleHttp\Exception\ClientException $e){
 			$exception_message = $e->getMessage();
-			$msg = "- Profile with UID UID #$i has been skipped due to an exception from Drupal.org's API: $exception_message \n";
+			$msg = "- Profile with UID #$i has been skipped due to an exception from Drupal.org's API: $exception_message \n";
 			fwrite($log, $msg);
 			echo $msg;
 		}
