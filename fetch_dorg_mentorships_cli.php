@@ -32,6 +32,7 @@ const RUN_2 = 5155;
 const RUN_3 = 11010;
 const RUN_4 = 14477;
 const RUN_5 = 17134;
+const RUN_6 = 25183;
 
 
 // Dummy credentials, only to use for local purposes
@@ -57,7 +58,7 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_5; $i <= LAST_UID; $i++) {
+	for ($i = RUN_6; $i <= LAST_UID; $i++) {
 		// Fetch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
@@ -89,7 +90,12 @@ try
 			}			
 		}catch (GuzzleHttp\Exception\ClientException $e){
 			$exception_message = $e->getMessage();
-			$msg = "- Profile with UID #$i has been skipped due to an exception from Drupal.org's API: $exception_message \n";
+			$msg = "- Profile with UID #$i has been skipped due to an exception from Drupal.org's API (client side): $exception_message \n";
+			fwrite($log, $msg);
+			echo $msg;
+		}catch (GuzzleHttp\Exception\ServerException $e){
+			$exception_message = $e->getMessage();
+			$msg = "- Profile with UID #$i has been skipped due to an exception from Drupal.org's API (server side): $exception_message \n";
 			fwrite($log, $msg);
 			echo $msg;
 		}
