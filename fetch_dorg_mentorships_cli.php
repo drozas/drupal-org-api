@@ -30,6 +30,9 @@ const _403_UID = 1283721;
 const RUN_1 = 4735;
 const RUN_2 = 5155;
 const RUN_3 = 11010;
+const RUN_4 = 14477;
+const RUN_5 = 17134;
+
 
 // Dummy credentials, only to use for local purposes
 $db_hostname = "localhost";
@@ -54,8 +57,8 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_3 + 1; $i <= LAST_UID; $i++) {
-		// Fectch whole user object. Catch possible error responses from API (e.g. 403)
+	for ($i = RUN_5; $i <= LAST_UID; $i++) {
+		// Fetch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
 			
@@ -85,7 +88,8 @@ try
 				echo $msg;
 			}			
 		}catch (GuzzleHttp\Exception\ClientException $e){
-			$msg = "- Profile with UID UID #$i has been skipped due to an exception from Drupal.org's API: $e->getMessage() \n";
+			$exception_message = $e->getMessage();
+			$msg = "- Profile with UID UID #$i has been skipped due to an exception from Drupal.org's API: $exception_message \n";
 			fwrite($log, $msg);
 			echo $msg;
 		}
@@ -93,7 +97,8 @@ try
 	$conn->close();
 	fclose($log);
 } catch (Exception $e) {
-	$msg =  "[!] Caught generic exception:  $e->getMessage() \n";
+	$exception_message = $e->getMessage();
+	$msg =  "[!] Caught generic exception:  $exception_message \n";
 	fwrite($log, $msg);
 	fclose($log);
 	echo $msg;
