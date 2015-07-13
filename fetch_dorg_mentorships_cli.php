@@ -41,6 +41,8 @@ const RUN_11 = 207648;
 const RUN_12 = 208504;
 const RUN_13 = 219641;
 const RUN_14 = 232626;
+const RUN_15 = 249780;
+
 
 
 
@@ -68,7 +70,7 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_14; $i <= LAST_UID; $i++) {
+	for ($i = RUN_15; $i <= LAST_UID; $i++) {
 		// Fetch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
