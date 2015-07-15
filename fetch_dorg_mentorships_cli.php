@@ -43,10 +43,7 @@ const RUN_13 = 219641;
 const RUN_14 = 232626;
 const RUN_15 = 249780;
 const RUN_16 = 264906;
-
-
-
-
+const RUN_17 = 273384;
 
 
 // Dummy credentials, only to use for local purposes
@@ -72,7 +69,7 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_16; $i <= LAST_UID; $i++) {
+	for ($i = RUN_17; $i <= LAST_UID; $i++) {
 		// Fetch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
