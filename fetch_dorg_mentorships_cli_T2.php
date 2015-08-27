@@ -28,27 +28,9 @@ const _403_UID = 1283721;
 const THREAD_2 = 2000000;
 
 // CONST FOR GATEWAY SERVER ERRORS
-const RUN_1 = 4735;
-const RUN_2 = 5155;
-const RUN_3 = 11010;
-const RUN_4 = 14477;
-const RUN_5 = 17134;
-const RUN_6 = 25183;
-const RUN_7 = 26393;
-const RUN_8 = 179766;
-const RUN_9 = 194223;
-const RUN_10 = 207009;
-const RUN_11 = 207648;
-const RUN_12 = 208504;
-const RUN_13 = 219641;
-const RUN_14 = 232626;
-const RUN_15 = 249780;
-const RUN_16 = 264906;
-const RUN_17 = 273384;
-const RUN_18 = 284781;
-const RUN_19 = 334916;
-const RUN_20 = 338651;
-const RUN_21 = 1254194;
+const RUN_1 = 2000000;
+const RUN_2 = 2865000;
+
 
 
 
@@ -75,7 +57,7 @@ try
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_21; $i <= THREAD_2; $i++) {
+	for ($i = RUN_2; $i <= LAST_UID; $i++) {
 		// Fetch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
