@@ -29,7 +29,7 @@ const THREAD_2 = 2000000;
 
 // CONST FOR GATEWAY SERVER ERRORS
 const RUN_1 = 2000000;
-const RUN_2 = 2865000;
+const RUN_2 = 2866007;
 
 
 
