@@ -5,9 +5,9 @@
  * For each profile, it is checked if this user has been mentored by someone.
  * If so, a new record is created for each of this relationships. The UIDs
  * and usernames are stored.
- * 
+ *
  * INSTRUCTIONS TO INSTALL IT:
- * 
+ *
  * - Clone repo: https://github.com/drozas/drupal-org-api
  * - Install composer: https://getcomposer.org/doc/00-intro.md
  * 		curl -sS https://getcomposer.org/installer | php
@@ -25,6 +25,7 @@ const LAST_UID = 3248108;
 const DROZAS_UID = 740628;
 const JCARBALLO_UID = 1283668;
 const _403_UID = 1283721;
+const THREAD_2 = 2000000;
 
 // CONST FOR GATEWAY SERVER ERRORS
 const RUN_1 = 4735;
@@ -47,6 +48,7 @@ const RUN_17 = 273384;
 const RUN_18 = 284781;
 const RUN_19 = 334916;
 const RUN_20 = 338651;
+const RUN_21 = 1254194;
 
 
 
@@ -66,27 +68,27 @@ try
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	
+
 	// Prepare log file
 	$log = fopen("./logs/log_" . time(), "w") or die("Unable to open file!");
-	
+
 	//Instantiate SDK client
 	$client = DrupalClient::create();
 
-	for ($i = RUN_20; $i <= LAST_UID; $i++) {
+	for ($i = RUN_21; $i <= THREAD_2; $i++) {
 		// Fetch whole user object. Catch possible error responses from API (e.g. 403)
 		try {
 			$user = $client->getUser($i);
-			
+
 			// Check if the UID exist. If not, the constructor was modified to set a null.
 			if ($user->getUid() != NULL){
-				
+
 				$mentored_uid = $user->getUid();
 				$mentored_username = $user->getName();
 				$msg= "- Profile from $mentored_username with UID #$i is being processed.\n";
 				fwrite($log, $msg);
 				echo $msg;
-					
+
 				// Add a new record for each mentored_by relationship of this profile
 				foreach ($user->getMentors() as $mentored_by){
 					$mentored_by_uid = $mentored_by->getUid();
@@ -102,7 +104,7 @@ try
 				$msg =  "- Profile with UID #$i has been skipped: 404 response from Drupal.org's API.\n";
 				fwrite($log, $msg);
 				echo $msg;
-			}			
+			}
 		}catch (GuzzleHttp\Exception\ClientException $e){
 			$exception_message = $e->getMessage();
 			$msg = "- Profile with UID #$i has been skipped due to an exception from Drupal.org's API (client side): $exception_message \n";
