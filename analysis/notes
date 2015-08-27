@@ -1,3 +1,15 @@
+Issues [!]
+==========
+
+- Log from T1 had to be manually divided (due to restriction size of GitHub):
+-- https://github.com/drozas/drupal-org-api/blob/master/logs/log_1439046131
+-- https://github.com/drozas/drupal-org-api/blob/master/logs/log_1439046131_man_divided
+
+- Duplicated entries were detected in T1. This has been solved (see steps).
+
+- DB from T2 had no records for most of the entities. This affects records from 2000000 - 1254194! Nevertheless, the relationships are stored in the log, so it will be possible to recover them from there creating an script which reads https://raw.githubusercontent.com/drozas/drupal-org-api/master/logs/log_1439046665
+
+
 Steps to validate and prepare data (e.g. using PHPmyAdmin):
 ===========================================================
 
