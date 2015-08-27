@@ -9,29 +9,23 @@ Steps to validate and prepare data (e.g. using PHPmyAdmin):
 
 
 
-Steps for gephi:
-================
+Steps for import in Gephi:
+==========================
 
-- Create unique list of nodes (required by gephi for labels)
-
-- Run 
-
-(SELECT DISTINCT t1.mentored_uid, t1.mentored_username FROM `mentored_by` t1)
-UNION
-(SELECT DISTINCT t2.mentored_by_uid, t2.mentored_by_username FROM `mentored_by` t2)
-
+- Create unique list of nodes, which required by Gephi for labels (see https://github.com/drozas/drupal-org-api/blob/master/scripts/create_list_nodes.sql)
 
 - Create CSV including headers (e.g. with calc):
 -- ID
 -- LABEL
 
-- Run 
-
-SELECT `mentored_uid`, `mentored_by_uid`  FROM `mentored_by` WHERE 1
+- Create list of edges (see https://github.com/drozas/drupal-org-api/blob/master/scripts/create_list_edges.sql) 
 
 - Create CSV including headers (e.g. with calc):
 -- SOURCE
 -- TARGET
+
+Playing a bit with the data in Gephi
+====================================
 
 - Following steps from (http://gephi.github.io/tutorials/gephi-tutorial-quick_start.pdf)
 
